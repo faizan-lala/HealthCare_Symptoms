@@ -53,6 +53,9 @@ const Dashboard = () => {
   const symptoms = symptomsData?.data?.data?.symptoms || []
   const stats = statsData?.data?.data || {}
   const suggestions = suggestionsData?.data?.data?.suggestions || []
+  const itemVariants = { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }
+  const listVariants = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } }
+  const hoverTap = { whileHover: { y: -2 }, whileTap: { scale: 0.98 } }
   // Real-time listeners
   useEffect(() => {
     if (!socket || !user?._id) return
@@ -103,6 +106,9 @@ const Dashboard = () => {
       color: 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'
     }
   ]
+
+  // Compute max for progress bars after quickStats is defined
+  const maxStatValue = Math.max(...quickStats.map(s => s.value || 0), 1)
 
   return (
     <div className="flex min-h-screen px-3 sm:px-4 lg:px-6">
@@ -166,11 +172,10 @@ const Dashboard = () => {
 
       {/* Quick Stats */}
       <motion.div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-2"
-        initial="hidden" animate="show"
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+        initial="hidden" animate="show" variants={listVariants}
       >
         {quickStats.map((stat, index) => (
-          <AnimatedCard key={stat.name} delay={index * 0.05} className="interactive-card overflow-hidden group">
+          <motion.div key={stat.name} variants={itemVariants} {...hoverTap} className="interactive-card overflow-hidden group">
             <div className="p-6 md:p-7">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -199,17 +204,16 @@ const Dashboard = () => {
               {/* Progress indicator */}
               <div className="mt-4">
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
-                  <div 
-                    className="bg-gradient-to-r from-primary-500 to-primary-600 h-1.5 rounded-full transform transition-all duration-1000 ease-out"
-                    style={{
-                      width: statsLoading ? '0%' : `${Math.min((stat.value / Math.max(...quickStats.map(s => s.value))) * 100, 100)}%`,
-                      animationDelay: `${index * 0.2}s`
-                    }}
-                  ></div>
+                  <motion.div 
+                    className="bg-gradient-to-r from-primary-500 to-primary-600 h-1.5 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: statsLoading ? '0%' : `${Math.min((stat.value / maxStatValue) * 100, 100)}%` }}
+                    transition={{ duration: 0.9, ease: 'easeOut', delay: index * 0.1 }}
+                  ></motion.div>
                 </div>
               </div>
             </div>
-          </AnimatedCard>
+          </motion.div>
         ))}
       </motion.div>
 
@@ -243,9 +247,9 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : symptoms.length > 0 ? (
-              <div className="space-y-3">
+              <motion.div className="space-y-3" initial="hidden" animate="show" variants={listVariants}>
                 {symptoms.map((symptom) => (
-                  <div key={symptom._id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <motion.div key={symptom._id} variants={itemVariants} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div className={`p-2 rounded-full ${getSeverityColorClass(symptom.severity)}`}>
                         <HeartIcon className="h-4 w-4" />
@@ -264,9 +268,9 @@ const Dashboard = () => {
                         {formatDate(symptom.createdAt)}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
               <div className="text-center py-6">
                 <HeartIcon className="mx-auto h-12 w-12 text-gray-400" />
@@ -318,10 +322,11 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : suggestions.length > 0 ? (
-              <div className="space-y-4">
+              <motion.div className="space-y-4" initial="hidden" animate="show" variants={listVariants}>
                 {suggestions.slice(0, 3).map((suggestion, index) => (
-                  <div
+                  <motion.div
                     key={index}
+                    variants={itemVariants}
                     className={`p-4 rounded-lg border ${getUrgencyColorClass(suggestion.urgency)}`}
                   >
                     <div className="flex items-start justify-between">
@@ -337,9 +342,9 @@ const Dashboard = () => {
                         {suggestion.confidence}% confidence
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
               <div className="text-center py-6">
                 <ChartBarIcon className="mx-auto h-12 w-12 text-gray-400" />
@@ -363,67 +368,75 @@ const Dashboard = () => {
           </h3>
         </div>
         <div className="card-body">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Link
-              to="/symptoms/new"
-              className="group flex items-center p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
-            >
-              <PlusIcon className="h-8 w-8 text-primary-600 group-hover:text-primary-700" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-primary-900 dark:text-primary-100">
-                  Log Symptom
-                </p>
-                <p className="text-xs text-primary-600 dark:text-primary-400">
-                  Track new symptoms
-                </p>
-              </div>
-            </Link>
+          <motion.div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" initial="hidden" animate="show" variants={listVariants}>
+            <motion.div {...hoverTap} variants={itemVariants} className="group rounded-lg">
+              <Link
+                to="/symptoms/new"
+                className="flex items-center p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
+              >
+                <PlusIcon className="h-8 w-8 text-primary-600 group-hover:text-primary-700" />
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-primary-900 dark:text-primary-100">
+                    Log Symptom
+                  </p>
+                  <p className="text-xs text-primary-600 dark:text-primary-400">
+                    Track new symptoms
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
 
-            <Link
-              to="/symptoms"
-              className="group flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-            >
-              <HeartIcon className="h-8 w-8 text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  View History
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Review past symptoms
-                </p>
-              </div>
-            </Link>
+            <motion.div {...hoverTap} variants={itemVariants} className="group rounded-lg">
+              <Link
+                to="/symptoms"
+                className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+              >
+                <HeartIcon className="h-8 w-8 text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" />
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    View History
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Review past symptoms
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
 
-            <Link
-              to="/suggestions"
-              className="group flex items-center p-4 bg-warning-50 dark:bg-warning-900/20 rounded-lg hover:bg-warning-100 dark:hover:bg-warning-900/30 transition-colors"
-            >
-              <ChartBarIcon className="h-8 w-8 text-warning-600 group-hover:text-warning-700" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-warning-900 dark:text-warning-100">
-                  Get Insights
-                </p>
-                <p className="text-xs text-warning-600 dark:text-warning-400">
-                  Analyze symptoms
-                </p>
-              </div>
-            </Link>
+            <motion.div {...hoverTap} variants={itemVariants} className="group rounded-lg">
+              <Link
+                to="/suggestions"
+                className="flex items-center p-4 bg-warning-50 dark:bg-warning-900/20 rounded-lg hover:bg-warning-100 dark:hover:bg-warning-900/30 transition-colors"
+              >
+                <ChartBarIcon className="h-8 w-8 text-warning-600 group-hover:text-warning-700" />
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-warning-900 dark:text-warning-100">
+                    Get Insights
+                  </p>
+                  <p className="text-xs text-warning-600 dark:text-warning-400">
+                    Analyze symptoms
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
 
-            <Link
-              to="/profile"
-              className="group flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
-            >
-              <HeartIcon className="h-8 w-8 text-purple-600 group-hover:text-purple-700" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-purple-900 dark:text-purple-100">
-                  Profile
-                </p>
-                <p className="text-xs text-purple-600 dark:text-purple-400">
-                  Update settings
-                </p>
-              </div>
-            </Link>
-          </div>
+            <motion.div {...hoverTap} variants={itemVariants} className="group rounded-lg">
+              <Link
+                to="/profile"
+                className="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
+              >
+                <HeartIcon className="h-8 w-8 text-purple-600 group-hover:text-purple-700" />
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-purple-900 dark:text-purple-100">
+                    Profile
+                  </p>
+                  <p className="text-xs text-purple-600 dark:text-purple-400">
+                    Update settings
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </AnimatedCard>
         </div>
