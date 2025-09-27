@@ -1,0 +1,330 @@
+{
+  "questions": [
+    {
+      "id": "fever_check",
+      "text": "Do you currently have a fever or feel unusually warm?",
+      "type": "boolean",
+      "options": [
+        { "label": "Yes, I have a fever", "value": "yes" },
+        { "label": "No, my temperature feels normal", "value": "no" },
+        { "label": "I'm not sure", "value": "unsure" }
+      ],
+      "next": {
+        "yes": "fever_duration",
+        "no": "pain_check",
+        "unsure": "fever_symptoms"
+      }
+    },
+    {
+      "id": "fever_duration",
+      "text": "How long have you had the fever?",
+      "type": "duration",
+      "options": [
+        { "label": "Less than 24 hours", "value": "1_day" },
+        { "label": "1-2 days", "value": "1_2_days" },
+        { "label": "3-5 days", "value": "3_5_days" },
+        { "label": "More than 5 days", "value": "5_plus_days" }
+      ],
+      "next": {
+        "default": "fever_severity"
+      }
+    },
+    {
+      "id": "fever_severity",
+      "text": "How would you rate your fever severity?",
+      "type": "severity",
+      "options": [
+        { "label": "Mild (slightly warm)", "value": "mild" },
+        { "label": "Moderate (clearly feverish)", "value": "moderate" },
+        { "label": "High (very hot, chills)", "value": "severe" }
+      ],
+      "next": {
+        "default": "respiratory_check"
+      }
+    },
+    {
+      "id": "fever_symptoms",
+      "text": "Are you experiencing any of these fever-related symptoms?",
+      "type": "multiple",
+      "options": [
+        { "label": "Chills or shivering", "value": "chills" },
+        { "label": "Sweating", "value": "sweating" },
+        { "label": "Feeling hot or flushed", "value": "hot_feeling" },
+        { "label": "None of these", "value": "none" }
+      ],
+      "next": {
+        "default": "respiratory_check"
+      }
+    },
+    {
+      "id": "pain_check",
+      "text": "Are you experiencing any pain or discomfort?",
+      "type": "boolean",
+      "options": [
+        { "label": "Yes, I have pain", "value": "yes" },
+        { "label": "No pain", "value": "no" }
+      ],
+      "next": {
+        "yes": "pain_location",
+        "no": "respiratory_check"
+      }
+    },
+    {
+      "id": "pain_location",
+      "text": "Where is the pain located?",
+      "type": "multiple",
+      "options": [
+        { "label": "Head/Headache", "value": "headache" },
+        { "label": "Throat/Sore throat", "value": "throat" },
+        { "label": "Chest", "value": "chest" },
+        { "label": "Abdomen/Stomach", "value": "abdomen" },
+        { "label": "Back", "value": "back" },
+        { "label": "Joints/Muscles", "value": "joints" },
+        { "label": "Other location", "value": "other" }
+      ],
+      "next": {
+        "default": "pain_severity"
+      }
+    },
+    {
+      "id": "pain_severity",
+      "text": "How would you rate your pain on a scale of 1-10?",
+      "type": "scale",
+      "options": [
+        { "label": "Mild (1-3)", "value": "mild" },
+        { "label": "Moderate (4-6)", "value": "moderate" },
+        { "label": "Severe (7-10)", "value": "severe" }
+      ],
+      "next": {
+        "default": "respiratory_check"
+      }
+    },
+    {
+      "id": "respiratory_check",
+      "text": "Are you experiencing any breathing or respiratory issues?",
+      "type": "multiple",
+      "options": [
+        { "label": "Cough (dry or with phlegm)", "value": "cough" },
+        { "label": "Shortness of breath", "value": "shortness_breath" },
+        { "label": "Congestion/Stuffy nose", "value": "congestion" },
+        { "label": "Runny nose", "value": "runny_nose" },
+        { "label": "Sneezing", "value": "sneezing" },
+        { "label": "None of these", "value": "none" }
+      ],
+      "next": {
+        "cough": "cough_details",
+        "shortness_breath": "breathing_severity",
+        "default": "digestive_check"
+      }
+    },
+    {
+      "id": "cough_details",
+      "text": "Tell me more about your cough:",
+      "type": "multiple",
+      "options": [
+        { "label": "Dry cough (no phlegm)", "value": "dry" },
+        { "label": "Productive cough (with phlegm)", "value": "productive" },
+        { "label": "Persistent/Won't stop", "value": "persistent" },
+        { "label": "Occasional/Mild", "value": "occasional" }
+      ],
+      "next": {
+        "default": "digestive_check"
+      }
+    },
+    {
+      "id": "breathing_severity",
+      "text": "How severe is your breathing difficulty?",
+      "type": "severity",
+      "options": [
+        { "label": "Mild (slight difficulty)", "value": "mild" },
+        { "label": "Moderate (noticeable difficulty)", "value": "moderate" },
+        { "label": "Severe (very difficult to breathe)", "value": "severe" }
+      ],
+      "next": {
+        "default": "digestive_check"
+      }
+    },
+    {
+      "id": "digestive_check",
+      "text": "Are you experiencing any digestive symptoms?",
+      "type": "multiple",
+      "options": [
+        { "label": "Nausea or feeling sick", "value": "nausea" },
+        { "label": "Vomiting", "value": "vomiting" },
+        { "label": "Diarrhea", "value": "diarrhea" },
+        { "label": "Constipation", "value": "constipation" },
+        { "label": "Loss of appetite", "value": "appetite_loss" },
+        { "label": "None of these", "value": "none" }
+      ],
+      "next": {
+        "default": "energy_check"
+      }
+    },
+    {
+      "id": "energy_check",
+      "text": "How are your energy levels and general wellbeing?",
+      "type": "multiple",
+      "options": [
+        { "label": "Very tired/Exhausted", "value": "exhausted" },
+        { "label": "Somewhat tired", "value": "tired" },
+        { "label": "Normal energy", "value": "normal" },
+        { "label": "Difficulty concentrating", "value": "concentration" },
+        { "label": "Feeling weak", "value": "weak" }
+      ],
+      "next": {
+        "default": "duration_check"
+      }
+    },
+    {
+      "id": "duration_check",
+      "text": "How long have you been experiencing these symptoms overall?",
+      "type": "duration",
+      "options": [
+        { "label": "Just started today", "value": "today" },
+        { "label": "1-2 days", "value": "1_2_days" },
+        { "label": "3-7 days", "value": "week" },
+        { "label": "1-2 weeks", "value": "1_2_weeks" },
+        { "label": "More than 2 weeks", "value": "2_plus_weeks" }
+      ],
+      "next": {
+        "default": "final"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "id": "emergency_breathing",
+      "conditions": {
+        "breathing_severity": "severe"
+      },
+      "result": {
+        "urgency": "high",
+        "title": "Seek Emergency Care",
+        "description": "Severe breathing difficulty requires immediate medical attention.",
+        "reasoning": "Severe shortness of breath can indicate serious respiratory or cardiac conditions that need emergency evaluation.",
+        "action": "Go to emergency room or call emergency services immediately"
+      }
+    },
+    {
+      "id": "high_fever_extended",
+      "conditions": {
+        "fever_check": "yes",
+        "fever_duration": ["3_5_days", "5_plus_days"],
+        "fever_severity": ["moderate", "severe"]
+      },
+      "result": {
+        "urgency": "high",
+        "title": "See Doctor Within 24 Hours",
+        "description": "Persistent high fever needs medical evaluation to rule out serious infections.",
+        "reasoning": "Fever lasting 3+ days, especially if moderate to severe, may indicate bacterial infection or other conditions requiring treatment.",
+        "action": "Schedule appointment with primary care doctor or visit urgent care"
+      }
+    },
+    {
+      "id": "severe_pain",
+      "conditions": {
+        "pain_severity": "severe"
+      },
+      "result": {
+        "urgency": "medium",
+        "title": "Consider Medical Consultation",
+        "description": "Severe pain should be evaluated, especially if persistent.",
+        "reasoning": "Pain rated 7-10/10 can significantly impact quality of life and may indicate conditions that benefit from treatment.",
+        "action": "Contact healthcare provider for advice or appointment"
+      }
+    },
+    {
+      "id": "respiratory_infection_combo",
+      "conditions": {
+        "fever_check": "yes",
+        "respiratory_check": ["cough", "congestion"],
+        "energy_check": ["tired", "exhausted"]
+      },
+      "result": {
+        "urgency": "medium",
+        "title": "Possible Respiratory Infection",
+        "description": "Your symptoms suggest a possible cold, flu, or other respiratory infection.",
+        "reasoning": "Combination of fever, respiratory symptoms, and fatigue are common signs of viral or bacterial respiratory infections.",
+        "action": "Rest, stay hydrated, monitor symptoms. See doctor if worsening or no improvement in 3-5 days"
+      }
+    },
+    {
+      "id": "digestive_dehydration",
+      "conditions": {
+        "digestive_check": ["vomiting", "diarrhea"]
+      },
+      "result": {
+        "urgency": "medium",
+        "title": "Monitor for Dehydration",
+        "description": "Vomiting and diarrhea can lead to dehydration.",
+        "reasoning": "Loss of fluids through vomiting and diarrhea requires attention to prevent dehydration complications.",
+        "action": "Stay hydrated with small, frequent sips of clear fluids. Seek medical care if unable to keep fluids down"
+      }
+    },
+    {
+      "id": "chronic_symptoms",
+      "conditions": {
+        "duration_check": ["1_2_weeks", "2_plus_weeks"]
+      },
+      "result": {
+        "urgency": "medium",
+        "title": "Consider Medical Evaluation",
+        "description": "Symptoms persisting 1-2+ weeks should be evaluated by a healthcare provider.",
+        "reasoning": "Prolonged symptoms may indicate underlying conditions that could benefit from diagnosis and treatment.",
+        "action": "Schedule appointment with primary care provider for comprehensive evaluation"
+      }
+    },
+    {
+      "id": "headache_focus",
+      "conditions": {
+        "pain_location": ["headache"],
+        "pain_severity": ["moderate", "severe"]
+      },
+      "result": {
+        "urgency": "medium",
+        "title": "Monitor Headache Symptoms",
+        "description": "Moderate to severe headaches warrant attention, especially if persistent or worsening.",
+        "reasoning": "While most headaches are benign, severe or persistent headaches can sometimes indicate conditions requiring treatment.",
+        "action": "Track headache patterns, consider over-the-counter pain relief. See doctor if frequent, severe, or accompanied by other concerning symptoms"
+      }
+    },
+    {
+      "id": "mild_symptoms",
+      "conditions": {
+        "fever_check": ["no", "unsure"],
+        "pain_severity": ["mild"],
+        "breathing_severity": ["mild"],
+        "duration_check": ["today", "1_2_days"]
+      },
+      "result": {
+        "urgency": "low",
+        "title": "Self-Care and Monitoring",
+        "description": "Your symptoms appear mild and recent. Focus on self-care and monitoring.",
+        "reasoning": "Mild, recent symptoms often resolve with rest and basic self-care measures.",
+        "action": "Rest, stay hydrated, eat nutritious foods. Monitor symptoms and seek care if they worsen or persist beyond a few days"
+      }
+    },
+    {
+      "id": "general_wellness",
+      "conditions": {
+        "energy_check": ["normal"],
+        "respiratory_check": ["none"],
+        "digestive_check": ["none"]
+      },
+      "result": {
+        "urgency": "low",
+        "title": "Generally Well",
+        "description": "You appear to be in good health with minimal concerning symptoms.",
+        "reasoning": "Absence of significant symptoms suggests good current health status.",
+        "action": "Continue healthy lifestyle habits. Regular check-ups with healthcare provider for preventive care"
+      }
+    }
+  ],
+  "fallback": {
+    "urgency": "low",
+    "title": "General Health Recommendations",
+    "description": "Based on your responses, consider these general health recommendations.",
+    "reasoning": "While no specific patterns were identified, maintaining good health practices is always beneficial.",
+    "action": "Rest, stay hydrated, eat well, and monitor symptoms. Contact healthcare provider if symptoms worsen or new concerns arise"
+  }
+}

@@ -1,0 +1,213 @@
+[
+  {
+    "id": "emergency_chest_pain",
+    "name": "Emergency: Severe Chest Pain",
+    "conditions": {
+      "symptoms": ["chest pain", "chest pressure", "heart pain"],
+      "severity": { "min": 8 },
+      "associatedSymptoms": ["shortness of breath", "nausea", "sweating", "dizziness"]
+    },
+    "suggestions": {
+      "urgency": "emergency",
+      "action": "Call 911 immediately",
+      "reasoning": "Severe chest pain with associated symptoms may indicate a heart attack or other serious cardiac emergency.",
+      "confidence": 95,
+      "nextSteps": [
+        "Call emergency services immediately",
+        "Chew aspirin if not allergic",
+        "Stay calm and sit upright",
+        "Do not drive yourself to hospital"
+      ]
+    }
+  },
+  {
+    "id": "emergency_breathing",
+    "name": "Emergency: Severe Breathing Difficulty",
+    "conditions": {
+      "symptoms": ["shortness of breath", "difficulty breathing", "can't breathe"],
+      "severity": { "min": 8 },
+      "duration": { "unit": "minutes", "max": 30 }
+    },
+    "suggestions": {
+      "urgency": "emergency",
+      "action": "Seek immediate emergency care",
+      "reasoning": "Severe breathing difficulty can be life-threatening and requires immediate medical attention.",
+      "confidence": 90,
+      "nextSteps": [
+        "Call 911 or go to ER immediately",
+        "Sit upright and try to stay calm",
+        "Use rescue inhaler if prescribed",
+        "Remove any tight clothing"
+      ]
+    }
+  },
+  {
+    "id": "emergency_severe_bleeding",
+    "name": "Emergency: Severe Bleeding",
+    "conditions": {
+      "symptoms": ["bleeding", "blood loss", "hemorrhage"],
+      "severity": { "min": 8 }
+    },
+    "suggestions": {
+      "urgency": "emergency",
+      "action": "Call 911 immediately",
+      "reasoning": "Severe bleeding can lead to shock and requires immediate emergency intervention.",
+      "confidence": 95,
+      "nextSteps": [
+        "Call emergency services immediately",
+        "Apply direct pressure to wound",
+        "Elevate the bleeding area if possible",
+        "Do not remove objects from wounds"
+      ]
+    }
+  },
+  {
+    "id": "urgent_high_fever",
+    "name": "Urgent: High Fever with Symptoms",
+    "conditions": {
+      "symptoms": ["fever", "high temperature"],
+      "temperature": { "min": 103 },
+      "associatedSymptoms": ["headache", "neck stiffness", "confusion", "rash"]
+    },
+    "suggestions": {
+      "urgency": "urgent",
+      "action": "Seek medical care within 2-4 hours",
+      "reasoning": "High fever with neurological symptoms may indicate serious infection requiring prompt treatment.",
+      "confidence": 85,
+      "nextSteps": [
+        "Go to urgent care or ER",
+        "Take temperature-reducing medication",
+        "Stay hydrated",
+        "Monitor for worsening symptoms"
+      ]
+    }
+  },
+  {
+    "id": "urgent_severe_abdominal_pain",
+    "name": "Urgent: Severe Abdominal Pain",
+    "conditions": {
+      "symptoms": ["abdominal pain", "stomach pain", "belly pain"],
+      "severity": { "min": 7 },
+      "associatedSymptoms": ["vomiting", "fever", "inability to pass gas"]
+    },
+    "suggestions": {
+      "urgency": "urgent",
+      "action": "Seek medical care within 4-6 hours",
+      "reasoning": "Severe abdominal pain with associated symptoms may indicate appendicitis, bowel obstruction, or other serious conditions.",
+      "confidence": 80,
+      "nextSteps": [
+        "Go to urgent care or ER",
+        "Do not eat or drink anything",
+        "Avoid pain medications until evaluated",
+        "Monitor for worsening symptoms"
+      ]
+    }
+  },
+  {
+    "id": "moderate_persistent_headache",
+    "name": "Moderate: Persistent Severe Headache",
+    "conditions": {
+      "symptoms": ["headache", "head pain"],
+      "severity": { "min": 7 },
+      "duration": { "unit": "hours", "min": 6 }
+    },
+    "suggestions": {
+      "urgency": "moderate",
+      "action": "Schedule appointment with healthcare provider within 24-48 hours",
+      "reasoning": "Persistent severe headaches may indicate an underlying condition that needs evaluation.",
+      "confidence": 75,
+      "nextSteps": [
+        "Contact your primary care doctor",
+        "Keep a headache diary",
+        "Try over-the-counter pain relief",
+        "Rest in a dark, quiet room"
+      ]
+    }
+  },
+  {
+    "id": "moderate_persistent_cough",
+    "name": "Moderate: Persistent Cough",
+    "conditions": {
+      "symptoms": ["cough", "persistent cough"],
+      "severity": { "min": 5 },
+      "duration": { "unit": "days", "min": 7 }
+    },
+    "suggestions": {
+      "urgency": "moderate",
+      "action": "Schedule appointment with healthcare provider within 1-2 weeks",
+      "reasoning": "A persistent cough lasting more than a week may indicate infection or other respiratory condition.",
+      "confidence": 70,
+      "nextSteps": [
+        "Contact your primary care doctor",
+        "Stay hydrated",
+        "Use cough suppressants if needed",
+        "Monitor for fever or worsening symptoms"
+      ]
+    }
+  },
+  {
+    "id": "mild_cold_symptoms",
+    "name": "Mild: Common Cold Symptoms",
+    "conditions": {
+      "symptoms": ["runny nose", "congestion", "sneezing", "sore throat"],
+      "severity": { "max": 4 },
+      "temperature": { "max": 100.4 }
+    },
+    "suggestions": {
+      "urgency": "mild",
+      "action": "Self-care and monitor symptoms",
+      "reasoning": "These appear to be mild cold symptoms that typically resolve with rest and home care.",
+      "confidence": 80,
+      "nextSteps": [
+        "Get plenty of rest",
+        "Stay hydrated",
+        "Use over-the-counter remedies as needed",
+        "Monitor for worsening symptoms",
+        "Contact doctor if symptoms persist > 10 days"
+      ]
+    }
+  },
+  {
+    "id": "mild_seasonal_allergies",
+    "name": "Mild: Seasonal Allergies",
+    "conditions": {
+      "symptoms": ["sneezing", "itchy eyes", "runny nose", "congestion"],
+      "severity": { "max": 4 },
+      "duration": { "unit": "days", "min": 3 }
+    },
+    "suggestions": {
+      "urgency": "mild",
+      "action": "Consider allergy management",
+      "reasoning": "Symptoms suggest seasonal allergies which can be managed with over-the-counter treatments.",
+      "confidence": 75,
+      "nextSteps": [
+        "Try antihistamines",
+        "Avoid known allergens",
+        "Keep windows closed during high pollen days",
+        "Consider nasal saline rinses",
+        "Consult doctor if symptoms persist"
+      ]
+    }
+  },
+  {
+    "id": "routine_mild_symptoms",
+    "name": "Routine: Mild General Symptoms",
+    "conditions": {
+      "severity": { "max": 3 },
+      "duration": { "unit": "days", "max": 2 }
+    },
+    "suggestions": {
+      "urgency": "routine",
+      "action": "Monitor and practice self-care",
+      "reasoning": "Mild symptoms of short duration often resolve on their own with basic self-care.",
+      "confidence": 70,
+      "nextSteps": [
+        "Continue monitoring symptoms",
+        "Maintain good hydration",
+        "Get adequate rest",
+        "Consider over-the-counter remedies if appropriate",
+        "Contact healthcare provider if symptoms worsen or persist"
+      ]
+    }
+  }
+]
