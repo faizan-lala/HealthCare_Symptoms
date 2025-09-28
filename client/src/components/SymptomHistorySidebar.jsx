@@ -113,47 +113,75 @@ const SymptomHistorySidebar = ({ isOpen, onClose }) => {
       />
 
       {/* Sidebar */}
-      <div className={`fixed right-0 top-0 h-full w-80 bg-white dark:bg-gray-800 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+      <div className={`fixed right-0 top-0 h-full w-96 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl shadow-2xl border-l border-gray-200/50 dark:border-gray-700/50 z-50 transform transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       } lg:translate-x-0 lg:shadow-none lg:relative lg:z-30 flex flex-col`}>
         
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-primary-500 to-primary-600">
+        <motion.div 
+          className="flex items-center justify-between p-6 border-b border-gray-200/50 dark:border-gray-700/50 bg-gradient-to-r from-primary-500 via-primary-600 to-purple-600"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           <div className="flex items-center space-x-3">
-            <ClockIcon className="w-6 h-6 text-white" />
-            <h2 className="text-lg font-semibold text-white">Symptom History</h2>
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 10 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <ClockIcon className="w-7 h-7 text-white" />
+            </motion.div>
+            <h2 className="text-xl font-bold text-white">Symptom History</h2>
           </div>
-          <button
+          <motion.button
             onClick={onClose}
-            className="lg:hidden p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            className="lg:hidden p-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-all duration-200 backdrop-blur-sm"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <XMarkIcon className="w-5 h-5" />
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         {/* Filter Tabs */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+        <motion.div 
+          className="p-6 border-b border-gray-200/50 dark:border-gray-700/50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className="flex space-x-2 bg-gray-100/80 dark:bg-gray-700/50 rounded-xl p-2 backdrop-blur-sm">
             {[
-              { value: 'all', label: 'All' },
-              { value: 'high', label: 'High' },
-              { value: 'medium', label: 'Medium' },
-              { value: 'routine', label: 'Routine' }
+              { value: 'all', label: 'All', count: suggestions.length },
+              { value: 'high', label: 'High', count: suggestions.filter(s => s.suggestions?.some(sg => categorizeUrgency(sg.urgency) === 'high')).length },
+              { value: 'medium', label: 'Medium', count: suggestions.filter(s => s.suggestions?.some(sg => categorizeUrgency(sg.urgency) === 'medium')).length },
+              { value: 'routine', label: 'Routine', count: suggestions.filter(s => s.suggestions?.some(sg => categorizeUrgency(sg.urgency) === 'routine')).length }
             ].map((tab) => (
-              <button
+              <motion.button
                 key={tab.value}
                 onClick={() => setFilter(tab.value)}
-                className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                className={`flex-1 px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 relative ${
                   filter === tab.value
-                    ? 'bg-white dark:bg-gray-600 text-primary-600 dark:text-primary-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
+                    ? 'bg-white dark:bg-gray-600 text-primary-700 dark:text-primary-300 shadow-lg shadow-primary-500/20'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/50 dark:hover:bg-gray-600/30'
                 }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                {tab.label}
-              </button>
+                <span className="block">{tab.label}</span>
+                {tab.count > 0 && (
+                  <span className={`absolute -top-1 -right-1 h-5 w-5 rounded-full text-xs font-bold flex items-center justify-center ${
+                    filter === tab.value 
+                      ? 'bg-primary-500 text-white' 
+                      : 'bg-gray-400 text-white'
+                  }`}>
+                    {tab.count}
+                  </span>
+                )}
+              </motion.button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar scroll-smooth">
