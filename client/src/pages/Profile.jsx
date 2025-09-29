@@ -7,16 +7,25 @@ import {
   BellIcon,
   EyeIcon,
   EyeSlashIcon,
-  CheckIcon
+  CheckIcon,
+  ArrowLeftIcon,
+  SparklesIcon,
+  KeyIcon,
+  DocumentArrowDownIcon,
+  ClockIcon
 } from '@heroicons/react/24/outline'
+import { UserIcon as UserSolid } from '@heroicons/react/24/solid'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../contexts/ThemeContext'
 import LoadingSpinner from '../components/LoadingSpinner'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 
 const Profile = () => {
   const { user, updateProfile, changePassword } = useAuth()
   const { theme, setTheme } = useTheme()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('profile')
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
@@ -73,324 +82,588 @@ const Profile = () => {
     { id: 'notifications', name: 'Notifications', icon: BellIcon }
   ]
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  }
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Profile Settings
-        </h1>
-        <p className="mt-1 text-gray-500 dark:text-gray-400">
-          Manage your account settings and preferences
-        </p>
-      </div>
-
-      {/* Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700">
-        <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                  activeTab === tab.id
-                    ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-                }`}
+    <motion.div 
+      className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      {/* Enhanced Header */}
+      <motion.div 
+        className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-blue-100/40 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 rounded-3xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 mx-4 sm:mx-6 lg:mx-8"
+        variants={itemVariants}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-400/10 dark:to-purple-400/10" />
+        <div className="relative px-6 sm:px-8 lg:px-10 py-8 sm:py-10">
+          <div className="flex items-center gap-6 mb-4">
+            <motion.button
+              onClick={() => navigate('/dashboard')}
+              className="p-3 rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ArrowLeftIcon className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+            </motion.button>
+            <div className="flex-1">
+              <motion.h1 
+                className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
               >
-                <Icon className="h-4 w-4" />
-                <span>{tab.name}</span>
-              </button>
-            )
-          })}
-        </nav>
-      </div>
-
-      {/* Tab Content */}
-      <div className="space-y-6">
-        {/* Profile Tab */}
-        {activeTab === 'profile' && (
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                Personal Information
-              </h3>
+                Profile Settings
+              </motion.h1>
+              <motion.p 
+                className="mt-3 text-gray-600 dark:text-gray-400 text-lg font-medium"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                Manage your account settings and preferences
+              </motion.p>
             </div>
-            <div className="card-body">
-              <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Name */}
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      {...registerProfile('name', { required: 'Name is required' })}
-                      type="text"
-                      className={`input ${profileErrors.name ? 'input-error' : ''}`}
-                    />
-                    {profileErrors.name && (
-                      <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">
-                        {profileErrors.name.message}
-                      </p>
-                    )}
-                  </div>
+            <motion.div 
+              className="hidden sm:flex items-center gap-3"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="flex items-center gap-3 px-5 py-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200/60 dark:border-blue-800/60 shadow-md">
+                <UserSolid className="h-6 w-6 text-blue-500" />
+                <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">{user?.name}</span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
 
-                  {/* Email */}
+      <div className="max-w-5xl mx-auto px-4 mt-8 sm:px-6 lg:px-8 pb-12">
+        {/* Enhanced Tabs */}
+        <motion.div 
+          className="mb-2"
+          variants={itemVariants}
+        >
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-white/30 dark:border-gray-700/40 shadow-xl p-3">
+            <nav className="flex space-x-3">
+              {tabs.map((tab) => {
+                const Icon = tab.icon
+                return (
+                  <motion.button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                      activeTab === tab.id
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:scale-102'
+                    }`}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="hidden sm:inline">{tab.name}</span>
+                  </motion.button>
+                )
+              })}
+            </nav>
+          </div>
+        </motion.div>
+
+        {/* Tab Content */}
+        <div className="space-y-6">
+          {/* Profile Tab */}
+          {activeTab === 'profile' && (
+            <motion.div 
+              className="relative overflow-hidden bg-gradient-to-br from-white/95 to-blue-50/40 dark:from-gray-800/95 dark:to-blue-900/30 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/40 shadow-2xl hover:shadow-3xl transition-all duration-300"
+              variants={itemVariants}
+              whileHover={{ y: -3 }}
+            >
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute top-6 left-6 text-5xl">👤</div>
+                <div className="absolute top-12 right-12 text-4xl">📝</div>
+                <div className="absolute bottom-6 left-12 text-3xl">✨</div>
+              </div>
+              
+              <div className="relative p-6">
+                <motion.div 
+                  className="flex items-center gap-4 mb-6"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-xl">
+                    <UserIcon className="h-7 w-7 text-white" />
+                  </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      {...registerProfile('email', { 
-                        required: 'Email is required',
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Invalid email address'
-                        }
-                      })}
-                      type="email"
-                      className={`input ${profileErrors.email ? 'input-error' : ''}`}
-                      disabled
-                    />
-                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                      Email cannot be changed. Contact support if needed.
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      Personal Information
+                    </h3>
+                    <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
+                      Update your profile details and personal information
                     </p>
                   </div>
-
-                  {/* Date of Birth */}
-                  <div>
-                    <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Date of Birth
-                    </label>
-                    <input
-                      {...registerProfile('dateOfBirth')}
-                      type="date"
-                      className="input"
-                    />
-                  </div>
-
-                  {/* Gender */}
-                  <div>
-                    <label htmlFor="gender" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Gender
-                    </label>
-                    <select {...registerProfile('gender')} className="input">
-                      <option value="">Select gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                      <option value="prefer-not-to-say">Prefer not to say</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Emergency Contact */}
-                <div>
-                  <h4 className="text-base font-medium text-gray-900 dark:text-white mb-4">
-                    Emergency Contact
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Name
+                </motion.div>
+                
+                <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Name */}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      <label htmlFor="name" className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                        <UserIcon className="h-5 w-5 text-blue-500" />
+                        Full Name
                       </label>
-                      <input
-                        {...registerProfile('emergencyContact.name')}
-                        type="text"
-                        className="input"
-                        placeholder="Emergency contact name"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Phone
-                      </label>
-                      <input
-                        {...registerProfile('emergencyContact.phone')}
-                        type="tel"
-                        className="input"
-                        placeholder="Phone number"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Relationship
-                      </label>
-                      <input
-                        {...registerProfile('emergencyContact.relationship')}
-                        type="text"
-                        className="input"
-                        placeholder="e.g., Spouse, Parent"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    disabled={profileSubmitting}
-                    className="btn btn-primary"
-                  >
-                    {profileSubmitting ? (
-                      <LoadingSpinner size="sm" color="white" />
-                    ) : (
-                      <>
-                        <CheckIcon className="h-4 w-4 mr-2" />
-                        Save Changes
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Preferences Tab */}
-        {activeTab === 'preferences' && (
-          <div className="space-y-6">
-            {/* Theme Settings */}
-            <div className="card">
-              <div className="card-header">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  Appearance
-                </h3>
-              </div>
-              <div className="card-body">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Theme
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {[
-                      { value: 'light', label: 'Light', description: 'Light mode' },
-                      { value: 'dark', label: 'Dark', description: 'Dark mode' },
-                      { value: 'system', label: 'System', description: 'Follow system preference' }
-                    ].map((option) => (
-                      <label
-                        key={option.value}
-                        className={`relative border rounded-lg p-4 cursor-pointer focus:outline-none ${
-                          theme === option.value
-                            ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
-                        }`}
-                      >
+                      <div className="relative">
                         <input
-                          type="radio"
-                          value={option.value}
-                          checked={theme === option.value}
-                          onChange={(e) => setTheme(e.target.value)}
-                          className="sr-only"
+                          {...registerProfile('name', { required: 'Name is required' })}
+                          type="text"
+                          className={`w-full px-5 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 ${
+                            profileErrors.name 
+                              ? 'border-red-300 dark:border-red-600 focus:border-red-500 focus:ring-red-500' 
+                              : 'border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500'
+                          } rounded-2xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl`}
+                          placeholder="Enter your full name"
                         />
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">
-                              {option.label}
-                            </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              {option.description}
-                            </div>
-                          </div>
-                          {theme === option.value && (
-                            <CheckIcon className="h-4 w-4 text-primary-600" />
-                          )}
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+                        {!profileErrors.name && (
+                          <motion.div 
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.3 }}
+                          >
+                            <CheckIcon className="h-6 w-6 text-green-500" />
+                          </motion.div>
+                        )}
+                      </div>
+                      {profileErrors.name && (
+                        <motion.p 
+                          className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                        >
+                          {profileErrors.name.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
 
-            {/* Data & Privacy */}
-            <div className="card">
-              <div className="card-header">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  Data & Privacy
-                </h3>
-              </div>
-              <div className="card-body space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      Data Export
+                    {/* Email */}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <label htmlFor="email" className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                        <SparklesIcon className="h-5 w-5 text-purple-500" />
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <input
+                          {...registerProfile('email', { 
+                            required: 'Email is required',
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: 'Invalid email address'
+                            }
+                          })}
+                          type="email"
+                          className="w-full px-5 py-4 bg-gray-100/80 dark:bg-gray-700/80 backdrop-blur-sm border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-lg text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                          disabled
+                        />
+                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                          <KeyIcon className="h-6 w-6 text-gray-400" />
+                        </div>
+                      </div>
+                      <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                        <KeyIcon className="h-4 w-4" />
+                        Email cannot be changed. Contact support if needed.
+                      </p>
+                    </motion.div>
+
+                  </div>
+
+                  {/* Additional Fields */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Date of Birth */}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <label htmlFor="dateOfBirth" className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                        <ClockIcon className="h-5 w-5 text-green-500" />
+                        Date of Birth
+                      </label>
+                      <input
+                        {...registerProfile('dateOfBirth')}
+                        type="date"
+                        className="w-full px-5 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-2xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white focus:shadow-xl"
+                      />
+                    </motion.div>
+
+                    {/* Gender */}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <label htmlFor="gender" className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                        <UserIcon className="h-5 w-5 text-pink-500" />
+                        Gender
+                      </label>
+                      <select 
+                        {...registerProfile('gender')} 
+                        className="w-full px-5 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-2xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white focus:shadow-xl"
+                      >
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer-not-to-say">Prefer not to say</option>
+                      </select>
+                    </motion.div>
+                  </div>
+
+                  {/* Emergency Contact */}
+                  <motion.div 
+                    className="mt-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-3 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg">
+                        <UserIcon className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white">
+                        Emergency Contact
+                      </h4>
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Download all your health data
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                          Contact Name
+                        </label>
+                        <input
+                          {...registerProfile('emergencyContact.name')}
+                          type="text"
+                          className="w-full px-4 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl"
+                          placeholder="Emergency contact name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                          Phone Number
+                        </label>
+                        <input
+                          {...registerProfile('emergencyContact.phone')}
+                          type="tel"
+                          className="w-full px-4 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl"
+                          placeholder="Phone number"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                          Relationship
+                        </label>
+                        <input
+                          {...registerProfile('emergencyContact.relationship')}
+                          type="text"
+                          className="w-full px-4 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 rounded-xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl"
+                          placeholder="e.g., Spouse, Parent"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    className="flex justify-end pt-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <motion.button
+                      type="submit"
+                      disabled={profileSubmitting}
+                      className="px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                      whileHover={{ scale: 1.05, y: -3 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {profileSubmitting ? (
+                        <>
+                          <LoadingSpinner size="sm" color="white" />
+                          <span>Saving Changes...</span>
+                        </>
+                      ) : (
+                        <>
+                          <CheckIcon className="h-6 w-6" />
+                          <span>Save Changes</span>
+                        </>
+                      )}
+                    </motion.button>
+                  </motion.div>
+                </form>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Preferences Tab */}
+          {activeTab === 'preferences' && (
+            <div className="space-y-6">
+              {/* Theme Settings */}
+              <motion.div 
+                className="relative overflow-hidden bg-gradient-to-br from-white/95 to-purple-50/40 dark:from-gray-800/95 dark:to-purple-900/30 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/40 shadow-2xl hover:shadow-3xl transition-all duration-300"
+                variants={itemVariants}
+                whileHover={{ y: -3 }}
+              >
+                <div className="relative p-6">
+                  <motion.div 
+                    className="flex items-center gap-4 mb-6"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                  >
+                    <div className="p-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-xl">
+                      <CogIcon className="h-7 w-7 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        Appearance
+                      </h3>
+                      <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
+                        Customize your visual experience
+                      </p>
+                    </div>
+                  </motion.div>
+                  
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+                      <SparklesIcon className="h-5 w-5 text-purple-500" />
+                      Theme Preference
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {[
+                        { value: 'light', label: 'Light', description: 'Bright and clean', emoji: '☀️' },
+                        { value: 'dark', label: 'Dark', description: 'Easy on the eyes', emoji: '🌙' },
+                        { value: 'system', label: 'System', description: 'Follow device settings', emoji: '⚡' }
+                      ].map((option, index) => (
+                        <motion.label
+                          key={option.value}
+                          className={`relative border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 ${
+                            theme === option.value
+                              ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-xl transform scale-105'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-600 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:scale-102'
+                          }`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          whileHover={{ scale: 1.05, y: -3 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <input
+                            type="radio"
+                            value={option.value}
+                            checked={theme === option.value}
+                            onChange={(e) => setTheme(e.target.value)}
+                            className="sr-only"
+                          />
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <span className="text-3xl">{option.emoji}</span>
+                              <div>
+                                <div className="text-base font-bold text-gray-900 dark:text-white">
+                                  {option.label}
+                                </div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                  {option.description}
+                                </div>
+                              </div>
+                            </div>
+                            {theme === option.value && (
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center shadow-lg"
+                              >
+                                <CheckIcon className="h-5 w-5 text-white" />
+                              </motion.div>
+                            )}
+                          </div>
+                        </motion.label>
+                      ))}
                     </div>
                   </div>
-                  <button className="btn-outline text-sm">
-                    Export Data
-                  </button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      Data Retention
+              </motion.div>
+
+              {/* Data & Privacy */}
+              <motion.div 
+                className="relative overflow-hidden bg-gradient-to-br from-white/95 to-green-50/40 dark:from-gray-800/95 dark:to-green-900/30 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/40 shadow-2xl hover:shadow-3xl transition-all duration-300"
+                variants={itemVariants}
+                whileHover={{ y: -3 }}
+              >
+                <div className="relative p-6">
+                  <motion.div 
+                    className="flex items-center gap-4 mb-6"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                  >
+                    <div className="p-4 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-xl">
+                      <DocumentArrowDownIcon className="h-7 w-7 text-white" />
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Manage how long we keep your data
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        Data & Privacy
+                      </h3>
+                      <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
+                        Manage your data and privacy settings
+                      </p>
                     </div>
+                  </motion.div>
+                  
+                  <div className="space-y-4">
+                    <motion.div 
+                      className="flex items-center justify-between p-4 bg-white/60 dark:bg-gray-700/60 rounded-2xl border border-gray-200/50 dark:border-gray-600/50"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      <div>
+                        <div className="text-base font-bold text-gray-900 dark:text-white">
+                          Data Export
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          Download all your health data
+                        </div>
+                      </div>
+                      <motion.button 
+                        className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <DocumentArrowDownIcon className="h-5 w-5" />
+                        Export Data
+                      </motion.button>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="flex items-center justify-between p-4 bg-white/60 dark:bg-gray-700/60 rounded-2xl border border-gray-200/50 dark:border-gray-600/50"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <div>
+                        <div className="text-base font-bold text-gray-900 dark:text-white">
+                          Data Retention
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          Manage how long we keep your data
+                        </div>
+                      </div>
+                      <select className="px-4 py-3 bg-white/80 dark:bg-gray-800/80 border-2 border-gray-200 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl shadow-lg text-gray-900 dark:text-white font-medium">
+                        <option value="1year">1 Year</option>
+                        <option value="2years">2 Years</option>
+                        <option value="5years">5 Years</option>
+                        <option value="forever">Forever</option>
+                      </select>
+                    </motion.div>
                   </div>
-                  <select className="input text-sm w-auto">
-                    <option value="1year">1 Year</option>
-                    <option value="2years">2 Years</option>
-                    <option value="5years">5 Years</option>
-                    <option value="forever">Forever</option>
-                  </select>
                 </div>
-              </div>
-            </div>
+              </motion.div>
           </div>
         )}
 
         {/* Security Tab */}
         {activeTab === 'security' && (
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                Change Password
-              </h3>
-            </div>
-            <div className="card-body">
+          <motion.div 
+            className="relative overflow-hidden bg-gradient-to-br from-white/95 to-red-50/40 dark:from-gray-800/95 dark:to-red-900/30 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/40 shadow-2xl hover:shadow-3xl transition-all duration-300"
+            variants={itemVariants}
+            whileHover={{ y: -3 }}
+          >
+            <div className="relative p-6">
+              <motion.div 
+                className="flex items-center gap-4 mb-6"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <div className="p-4 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl shadow-xl">
+                  <ShieldCheckIcon className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Security Settings
+                  </h3>
+                  <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
+                    Manage your password and security preferences
+                  </p>
+                </div>
+              </motion.div>
+              
               <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-6">
                 {/* Current Password */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                    <KeyIcon className="h-5 w-5 text-red-500" />
                     Current Password
                   </label>
                   <div className="relative">
                     <input
                       {...registerPassword('currentPassword', { required: 'Current password is required' })}
                       type={showCurrentPassword ? 'text' : 'password'}
-                      className={`input pr-10 ${passwordErrors.currentPassword ? 'input-error' : ''}`}
+                      className={`w-full px-5 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 ${
+                        passwordErrors.currentPassword 
+                          ? 'border-red-300 dark:border-red-600 focus:border-red-500 focus:ring-red-500' 
+                          : 'border-gray-200 dark:border-gray-600 focus:border-red-500 focus:ring-red-500'
+                      } rounded-2xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl pr-12`}
+                      placeholder="Enter your current password"
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 flex items-center pr-3"
+                      className="absolute inset-y-0 right-0 flex items-center pr-4"
                       onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     >
                       {showCurrentPassword ? (
-                        <EyeSlashIcon className="h-4 w-4 text-gray-400" />
+                        <EyeSlashIcon className="h-6 w-6 text-gray-400" />
                       ) : (
-                        <EyeIcon className="h-4 w-4 text-gray-400" />
+                        <EyeIcon className="h-6 w-6 text-gray-400" />
                       )}
                     </button>
                   </div>
                   {passwordErrors.currentPassword && (
-                    <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">
+                    <motion.p 
+                      className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                       {passwordErrors.currentPassword.message}
-                    </p>
+                    </motion.p>
                   )}
-                </div>
+                </motion.div>
 
                 {/* New Password */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                    <ShieldCheckIcon className="h-5 w-5 text-green-500" />
                     New Password
                   </label>
                   <div className="relative">
@@ -404,30 +677,44 @@ const Profile = () => {
                         }
                       })}
                       type={showNewPassword ? 'text' : 'password'}
-                      className={`input pr-10 ${passwordErrors.newPassword ? 'input-error' : ''}`}
+                      className={`w-full px-5 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 ${
+                        passwordErrors.newPassword 
+                          ? 'border-red-300 dark:border-red-600 focus:border-red-500 focus:ring-red-500' 
+                          : 'border-gray-200 dark:border-gray-600 focus:border-green-500 focus:ring-green-500'
+                      } rounded-2xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl pr-12`}
+                      placeholder="Enter your new password"
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 flex items-center pr-3"
+                      className="absolute inset-y-0 right-0 flex items-center pr-4"
                       onClick={() => setShowNewPassword(!showNewPassword)}
                     >
                       {showNewPassword ? (
-                        <EyeSlashIcon className="h-4 w-4 text-gray-400" />
+                        <EyeSlashIcon className="h-6 w-6 text-gray-400" />
                       ) : (
-                        <EyeIcon className="h-4 w-4 text-gray-400" />
+                        <EyeIcon className="h-6 w-6 text-gray-400" />
                       )}
                     </button>
                   </div>
                   {passwordErrors.newPassword && (
-                    <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">
+                    <motion.p 
+                      className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                       {passwordErrors.newPassword.message}
-                    </p>
+                    </motion.p>
                   )}
-                </div>
+                </motion.div>
 
                 {/* Confirm New Password */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                    <CheckIcon className="h-5 w-5 text-blue-500" />
                     Confirm New Password
                   </label>
                   <input
@@ -436,119 +723,181 @@ const Profile = () => {
                       validate: value => value === newPassword || 'Passwords do not match'
                     })}
                     type="password"
-                    className={`input ${passwordErrors.confirmPassword ? 'input-error' : ''}`}
+                    className={`w-full px-5 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 ${
+                      passwordErrors.confirmPassword 
+                        ? 'border-red-300 dark:border-red-600 focus:border-red-500 focus:ring-red-500' 
+                        : 'border-gray-200 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500'
+                    } rounded-2xl shadow-lg transition-all duration-200 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:shadow-xl`}
+                    placeholder="Confirm your new password"
                   />
                   {passwordErrors.confirmPassword && (
-                    <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">
+                    <motion.p 
+                      className="mt-3 text-sm text-red-600 dark:text-red-400 flex items-center gap-2"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                       {passwordErrors.confirmPassword.message}
-                    </p>
+                    </motion.p>
                   )}
-                </div>
+                </motion.div>
 
-                <div className="flex justify-end">
-                  <button
+                <motion.div 
+                  className="flex justify-end pt-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <motion.button
                     type="submit"
                     disabled={passwordSubmitting}
-                    className="btn btn-primary"
+                    className="px-10 py-5 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    whileHover={{ scale: 1.05, y: -3 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {passwordSubmitting ? (
-                      <LoadingSpinner size="sm" color="white" />
+                      <>
+                        <LoadingSpinner size="sm" color="white" />
+                        <span>Changing Password...</span>
+                      </>
                     ) : (
-                      'Change Password'
+                      <>
+                        <ShieldCheckIcon className="h-6 w-6" />
+                        <span>Change Password</span>
+                      </>
                     )}
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               </form>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Notifications Tab */}
         {activeTab === 'notifications' && (
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                Notification Preferences
-              </h3>
-            </div>
-            <div className="card-body space-y-6">
+          <motion.div 
+            className="relative overflow-hidden bg-gradient-to-br from-white/95 to-yellow-50/40 dark:from-gray-800/95 dark:to-yellow-900/30 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/40 shadow-2xl hover:shadow-3xl transition-all duration-300"
+            variants={itemVariants}
+            whileHover={{ y: -3 }}
+          >
+            <div className="relative p-6">
+              <motion.div 
+                className="flex items-center gap-4 mb-6"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <div className="p-4 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl shadow-xl">
+                  <BellIcon className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Notification Preferences
+                  </h3>
+                  <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
+                    Customize how you receive notifications
+                  </p>
+                </div>
+              </motion.div>
+              
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      Email Notifications
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Receive health insights and reminders via email
-                    </div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      Push Notifications
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Get notified about important health updates
-                    </div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      Weekly Health Summary
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Receive a weekly summary of your health data
-                    </div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      Emergency Alerts
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Critical health alerts based on symptom analysis
-                    </div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    disabled
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 opacity-50"
-                  />
-                </div>
+                {[
+                  {
+                    id: 'email',
+                    title: 'Email Notifications',
+                    description: 'Receive health insights and reminders via email',
+                    icon: SparklesIcon,
+                    checked: true
+                  },
+                  {
+                    id: 'push',
+                    title: 'Push Notifications',
+                    description: 'Get notified about important health updates',
+                    icon: BellIcon,
+                    checked: true
+                  },
+                  {
+                    id: 'weekly',
+                    title: 'Weekly Health Summary',
+                    description: 'Receive a weekly summary of your health data',
+                    icon: ClockIcon,
+                    checked: true
+                  },
+                  {
+                    id: 'emergency',
+                    title: 'Emergency Alerts',
+                    description: 'Critical health alerts based on symptom analysis',
+                    icon: ShieldCheckIcon,
+                    checked: true,
+                    disabled: true
+                  }
+                ].map((notification, index) => {
+                  const Icon = notification.icon
+                  return (
+                    <motion.div 
+                      key={notification.id}
+                      className="flex items-center justify-between p-4 bg-white/60 dark:bg-gray-700/60 rounded-2xl border border-gray-200/50 dark:border-gray-600/50"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-xl ${
+                          notification.disabled 
+                            ? 'bg-gray-400 dark:bg-gray-600' 
+                            : 'bg-gradient-to-br from-yellow-500 to-orange-600'
+                        }`}>
+                          <Icon className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="text-base font-bold text-gray-900 dark:text-white">
+                            {notification.title}
+                          </div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            {notification.description}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          defaultChecked={notification.checked}
+                          disabled={notification.disabled}
+                          className={`h-6 w-6 rounded border-2 ${
+                            notification.disabled
+                              ? 'border-gray-300 text-gray-400 opacity-50'
+                              : 'border-yellow-500 text-yellow-600 focus:ring-yellow-500'
+                          }`}
+                        />
+                        {notification.disabled && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            Required
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  )
+                })}
               </div>
 
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  Emergency alerts cannot be disabled for your safety.
+              <motion.div 
+                className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/50"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <div className="flex items-center gap-3">
+                  <ShieldCheckIcon className="h-6 w-6 text-blue-500" />
+                  <div className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                    Emergency alerts cannot be disabled for your safety.
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         )}
+        </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

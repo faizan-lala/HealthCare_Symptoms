@@ -123,153 +123,112 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="flex-1 lg:mr-96">
+      <div className="flex-1 lg:mr-96 lg:pr-4">
         <motion.div 
           className="space-y-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Enhanced Dashboard Header */}
+          {/* Modern Dashboard Header */}
           <motion.div 
-            className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-3xl shadow-2xl border border-white/10"
+            className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-blue-100/40 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 rounded-3xl shadow-xl border border-gray-200/50 dark:border-gray-700/50"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Animated Healthcare Background Pattern */}
+            {/* Subtle Background Pattern */}
             <div className="absolute inset-0">
-              <motion.div 
-                className="absolute inset-0 opacity-20"
-                animate={{
-                  background: [
-                    "radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)",
-                    "radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)",
-                    "radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)"
-                  ]
-                }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-              />
-              {/* Healthcare Icons Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-4 left-8 text-white text-2xl">🏥</div>
-                <div className="absolute top-8 right-16 text-white text-xl">💊</div>
-                <div className="absolute bottom-8 left-16 text-white text-lg">🔬</div>
-                <div className="absolute bottom-4 right-8 text-white text-xl">🩺</div>
-                <div className="absolute top-1/2 left-1/4 text-white text-sm">❤️</div>
-                <div className="absolute top-1/3 right-1/3 text-white text-sm">⚡</div>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
+              <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-green-400/10 to-blue-400/10 rounded-full blur-3xl" />
             </div>
             
-            <div className="relative px-6 sm:px-8 py-6 text-white">
-              {/* Compact Header Section */}
+            <div className="relative px-6 sm:px-8 lg:px-10 py-8 sm:py-10">
+              {/* Modern Header Section */}
               <motion.div 
-                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"
+                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                {/* User Greeting & Search */}
-                <div className="flex-1 space-y-3">
-                  <div className="flex items-center justify-between">
+                {/* Welcome Section */}
+                <div className="flex-1">
+                  <motion.div 
+                    className="flex items-center gap-3 mb-3"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <motion.div
+                      className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
+                      whileHover={{ scale: 1.05, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <span className="text-2xl">👋</span>
+                    </motion.div>
                     <div>
-                      <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-                        <motion.span 
-                          className="text-2xl"
-                          animate={{ rotate: [0, 15, -10, 15, 0] }}
-                          transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
-                        >
-                          👋
-                        </motion.span>
-                        <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                          Welcome back, {user?.name?.split(' ')[0]}!
-                        </span>
+                      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                        Welcome back, {user?.name?.split(' ')[0]}!
                       </h1>
-                      <p className="text-blue-100 text-base leading-relaxed mt-1">
-                        Let's check in on your health today. How are you feeling?
+                      <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base mt-1">
+                        Let's check in on your health today
                       </p>
                     </div>
-                    
-                    {/* Mobile Sidebar Toggle */}
-                    <motion.button
-                      onClick={() => setIsHistorySidebarOpen(true)}
-                      className="lg:hidden inline-flex items-center px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/20"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Bars3Icon className="w-4 h-4 mr-1" />
-                      <span className="text-xs font-medium">History</span>
-                    </motion.button>
-                  </div>
+                  </motion.div>
                   
-                  {/* Compact Search Bar */}
+                  {/* Modern Search Bar */}
                   <motion.div 
-                    className="relative max-w-xl"
+                    className="relative max-w-md"
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.3 }}
                   >
-                    <div className="relative">
-                      <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <div className="relative group">
+                      <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="search"
-                        placeholder="Search symptoms, insights, or ask Dr. Helper..."
-                        className="w-full pl-10 pr-12 py-3 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/20 dark:border-gray-600/30 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-md hover:shadow-lg text-sm"
+                        placeholder="Search symptoms or ask Dr. Helper..."
+                        className="w-full pl-12 pr-14 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md text-sm font-medium"
                       />
-                      {/* Search Icon Animation */}
-                      <motion.div 
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                      <motion.button 
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        <button className="p-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 shadow-md">
-                          <SparklesIcon className="h-3.5 w-3.5" />
-                        </button>
-                      </motion.div>
-                    </div>
-                    {/* Search Suggestions */}
-                    <div className="absolute top-full left-0 right-0 mt-2 opacity-0 group-focus-within:opacity-100 transition-opacity duration-200">
-                      <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-xl border border-white/20 dark:border-gray-600/30 p-2">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2 font-medium">Quick suggestions:</div>
-                        {['Headache symptoms', 'Fever tracking', 'Dr. Helper chat', 'Health insights'].map((suggestion, index) => (
-                          <button
-                            key={suggestion}
-                            className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-150"
-                          >
-                            {suggestion}
-                          </button>
-                        ))}
-                      </div>
+                        <SparklesIcon className="h-4 w-4" />
+                      </motion.button>
                     </div>
                   </motion.div>
                 </div>
-                
-                {/* Compact Stats & Profile */}
+
+                {/* User Profile Section */}
                 <motion.div 
-                  className="flex items-center gap-3"
+                  className="flex items-center gap-4"
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <div className="hidden sm:flex items-center gap-3">
+                  {/* Stats */}
+                  <div className="hidden sm:flex items-center gap-6">
                     <div className="text-center">
-                      <div className="text-xl font-bold text-white">
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
                         {stats.stats?.totalSymptoms || 0}
                       </div>
-                      <div className="text-xs text-blue-200 font-medium">Total</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">Total</div>
                     </div>
-                    <div className="w-px h-6 bg-white/20" />
+                    <div className="w-px h-8 bg-gray-200 dark:bg-gray-600" />
                     <div className="text-center">
-                      <div className="text-xl font-bold text-green-300">
+                      <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                         {stats.stats?.resolvedSymptoms || 0}
                       </div>
-                      <div className="text-xs text-blue-200 font-medium">Resolved</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">Resolved</div>
                     </div>
                   </div>
                   
-                  {/* Compact User Profile */}
+                  {/* Profile */}
                   <motion.div 
-                    className="flex items-center gap-2 ml-3"
+                    className="flex items-center gap-3 p-3 bg-white/60 dark:bg-gray-800/60 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm"
                     whileHover={{ scale: 1.02 }}
                   >
                     <div className="relative">
@@ -277,22 +236,22 @@ const Dashboard = () => {
                         <img
                           src={user.profileImage}
                           alt="Profile"
-                          className="w-10 h-10 rounded-xl bg-white/20 border-2 border-white/30"
+                          className="w-10 h-10 rounded-xl bg-white/20 border-2 border-gray-200 dark:border-gray-600"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/20 to-white/10 border-2 border-white/30 flex items-center justify-center backdrop-blur-sm">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 border-2 border-gray-200 dark:border-gray-600 flex items-center justify-center">
                           <span className="text-sm font-bold text-white">
                             {user?.name?.charAt(0).toUpperCase()}
                           </span>
                         </div>
                       )}
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border border-white" />
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white dark:border-gray-800" />
                     </div>
                     <div className="hidden md:block">
-                      <div className="text-sm font-semibold text-white">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-white">
                         {user?.name}
                       </div>
-                      <div className="text-xs text-blue-200">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
                         Health Dashboard
                       </div>
                     </div>
@@ -300,98 +259,74 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               
-              {/* Compact Action Buttons */}
+              {/* Modern Action Buttons */}
               <motion.div 
-                className="flex flex-col sm:flex-row gap-3"
+                className="flex flex-col sm:flex-row gap-4"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+                {/* Primary Action - Log Symptom */}
+                <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     to="/symptoms/new"
-                    className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-bold rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 group"
+                    className="inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 group"
                   >
                     <motion.div
                       whileHover={{ rotate: 90, scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                      className="mr-2"
+                      className="mr-3"
                     >
-                      <PlusIcon className="h-4 w-4" />
+                      <PlusIcon className="h-5 w-5" />
                     </motion.div>
-                    <span className="text-sm">Log New Symptom</span>
+                    <span className="text-sm font-medium">Log New Symptom</span>
                   </Link>
                 </motion.div>
                 
-                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
-                  <Link
-                    to="/suggestions"
-                    className="inline-flex items-center px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl shadow-lg backdrop-blur-sm border border-white/20 hover:border-white/30 transition-all duration-300 group"
-                  >
-                    <motion.div
-                      animate={{ rotate: [0, 10, -10, 0] }}
-                      transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-                      className="mr-2"
+                {/* Secondary Actions */}
+                <div className="flex gap-3">
+                  <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/suggestions"
+                      className="inline-flex items-center justify-center px-5 py-4 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl shadow-md hover:shadow-lg backdrop-blur-sm border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 group"
                     >
-                      <LightBulbIcon className="h-4 w-4" />
-                    </motion.div>
-                    <span className="text-sm">Get AI Insights</span>
-                  </Link>
-                </motion.div>
-                
-                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
-                  <button
-                    onClick={() => setIsChatbotOpen(true)}
-                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 hover:from-green-500/30 hover:to-blue-500/30 text-white font-bold rounded-xl shadow-lg backdrop-blur-sm border border-white/20 hover:border-white/30 transition-all duration-300 group"
-                  >
-                    <motion.div
-                      animate={{ 
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 5, -5, 0]
-                      }}
-                      transition={{ duration: 4, repeat: Infinity, repeatDelay: 3 }}
-                      className="mr-2"
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                        className="mr-2"
+                      >
+                        <LightBulbIcon className="h-5 w-5 text-yellow-500" />
+                      </motion.div>
+                      <span className="text-sm font-medium">AI Insights</span>
+                    </Link>
+                  </motion.div>
+                  
+                  <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+                    <button
+                      onClick={() => setIsChatbotOpen(true)}
+                      className="inline-flex items-center justify-center px-5 py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group"
                     >
-                      <span className="text-sm">🩺</span>
-                    </motion.div>
-                    <span className="text-sm">Ask Dr. Helper</span>
-                  </button>
-                </motion.div>
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.1, 1],
+                          rotate: [0, 5, -5, 0]
+                        }}
+                        transition={{ duration: 4, repeat: Infinity, repeatDelay: 3 }}
+                        className="mr-2"
+                      >
+                        <span className="text-lg">🩺</span>
+                      </motion.div>
+                      <span className="text-sm font-medium">Dr. Helper</span>
+                    </button>
+                  </motion.div>
+                </div>
               </motion.div>
             </div>
-            
-            {/* Enhanced Floating Elements */}
-            <motion.div 
-              className="absolute top-8 right-12 w-16 h-16 bg-white/10 rounded-full blur-2xl"
-              animate={{ 
-                y: [-8, 12, -8], 
-                x: [-4, 6, -4],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div 
-              className="absolute bottom-8 left-12 w-12 h-12 bg-green-400/20 rounded-full blur-xl"
-              animate={{ 
-                y: [8, -12, 8], 
-                x: [4, -6, 4],
-                scale: [1, 0.9, 1]
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            />
-            <motion.div 
-              className="absolute top-1/2 right-1/4 w-6 h-6 bg-blue-300/30 rounded-full blur-lg"
-              animate={{ 
-                rotate: [0, 360],
-                scale: [1, 1.2, 1]
-              }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            />
           </motion.div>
 
-          {/* Compact Quick Stats - 2 Cards Layout */}
+          {/* Modern Dashboard Stats */}
           <motion.div 
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8"
             initial="hidden" 
             animate="show" 
             variants={listVariants}
@@ -400,59 +335,65 @@ const Dashboard = () => {
               <motion.div 
                 key={stat.name} 
                 variants={itemVariants}
-                className="relative group"
-                whileHover={{ y: -3, scale: 1.02 }}
+                className="group relative"
+                whileHover={{ y: -4, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60">
-                  {/* Clean hover overlay */}
+                <div className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-blue-100/40 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50">
+                  {/* Gradient overlay on hover */}
                   <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
                     index === 0 
                       ? 'bg-gradient-to-br from-blue-50/50 to-cyan-50/50 dark:from-blue-900/10 dark:to-cyan-900/10' 
-                      : 'bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10'
+                      : index === 1
+                      ? 'bg-gradient-to-br from-orange-50/50 to-red-50/50 dark:from-orange-900/10 dark:to-red-900/10'
+                      : index === 2
+                      ? 'bg-gradient-to-br from-green-50/50 to-emerald-50/50 dark:from-green-900/10 dark:to-emerald-900/10'
+                      : 'bg-gradient-to-br from-purple-50/50 to-indigo-50/50 dark:from-purple-900/10 dark:to-indigo-900/10'
                   }`} />
                   
-                  <div className="relative p-4">
-                    {/* Header with icon and badge */}
-                    <div className="flex items-center justify-between mb-3">
+                  <div className="relative p-8">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-6">
                       <motion.div 
-                        className={`p-2 rounded-lg ${stat.color}`}
-                        whileHover={{ scale: 1.05 }}
+                        className={`p-4 rounded-2xl shadow-lg ${stat.color}`}
+                        whileHover={{ scale: 1.05, rotate: 5 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <stat.icon className="h-4 w-4" />
+                        <stat.icon className="h-8 w-8" />
                       </motion.div>
                       
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.1 + index * 0.05 }}
-                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${
-                          index === 0 
-                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' 
-                            : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
-                        }`}
-                      >
-                        <CalendarDaysIcon className="h-3 w-3" />
-                        This Week
-                      </motion.div>
+                      <div className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+                        index === 0 
+                          ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' 
+                          : index === 1
+                          ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300'
+                          : index === 2
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                          : 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                      }`}>
+                        Week
+                      </div>
                     </div>
                     
                     {/* Title */}
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 leading-tight">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                       {stat.name}
                     </h3>
                     
-                    {/* Value and items */}
-                    <div className="flex items-end justify-between mb-3">
+                    {/* Value and Status */}
+                    <div className="flex items-center justify-between mb-6">
                       {statsLoading ? (
-                        <div className="h-7 w-8 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                        <div className="h-12 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
                       ) : (
                         <motion.span 
-                          className={`text-2xl font-bold ${
+                          className={`text-4xl font-bold ${
                             index === 0 
                               ? 'text-blue-600 dark:text-blue-400' 
-                              : 'text-amber-600 dark:text-amber-400'
+                              : index === 1
+                              ? 'text-orange-600 dark:text-orange-400'
+                              : index === 2
+                              ? 'text-green-600 dark:text-green-400'
+                              : 'text-purple-600 dark:text-purple-400'
                           }`}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -463,42 +404,52 @@ const Dashboard = () => {
                       )}
                       
                       <div className="text-right">
-                        <span className="text-xs text-gray-500 dark:text-gray-400 block">items</span>
-                        <span className={`text-xs font-medium ${
+                        <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">items</div>
+                        <div className={`text-sm font-semibold ${
                           index === 0 
                             ? 'text-blue-600 dark:text-blue-400' 
-                            : stat.value === 0 
-                              ? 'text-green-600 dark:text-green-400' 
-                              : 'text-amber-600 dark:text-amber-400'
+                            : index === 1
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : index === 2
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-purple-600 dark:text-purple-400'
                         }`}>
-                          {index === 0 ? 'Tracked' : stat.value === 0 ? 'All Clear' : 'Monitor'}
-                        </span>
+                          {index === 0 ? 'Tracked' : index === 2 && stat.value === 0 ? 'All Clear' : 'Monitor'}
+                        </div>
                       </div>
                     </div>
                     
-                    {/* Progress section */}
-                    <div className="space-y-2">
+                    {/* Progress Section */}
+                    <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+                        <span className="text-sm text-gray-600 dark:text-gray-400 font-semibold">
                           {index === 0 ? 'Health Progress' : 'Severity Level'}
                         </span>
-                        <span className={`text-xs font-semibold ${
+                        <span className={`text-sm font-bold ${
                           index === 0 
                             ? 'text-blue-600 dark:text-blue-400' 
-                            : 'text-amber-600 dark:text-amber-400'
+                            : index === 1
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : index === 2
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-purple-600 dark:text-purple-400'
                         }`}>
                           {Math.round((stat.value / Math.max(maxStatValue, 1)) * 100)}%
                         </span>
                       </div>
                       
-                      <div className="relative w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                      <div className="relative w-full bg-gray-100 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                         <motion.div 
                           className={`absolute inset-0 rounded-full ${
                             index === 0 
                               ? 'bg-gradient-to-r from-blue-500 to-cyan-500' 
-                              : stat.value === 0 
+                              : index === 1
+                              ? 'bg-gradient-to-r from-orange-500 to-red-500'
+                              : index === 2
+                              ? stat.value === 0 
                                 ? 'bg-gradient-to-r from-green-500 to-emerald-500'
-                                : 'bg-gradient-to-r from-amber-500 to-orange-500'
+                                : 'bg-gradient-to-r from-green-500 to-emerald-500'
+                              : 'bg-gradient-to-r from-purple-500 to-indigo-500'
                           }`}
                           initial={{ width: 0 }}
                           animate={{ 
@@ -513,33 +464,33 @@ const Dashboard = () => {
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
                           {index === 0 ? (
-                            <ArrowTrendingUpIcon className="h-3 w-3" />
+                            <ArrowTrendingUpIcon className="h-5 w-5" />
                           ) : (
-                            <HeartIcon className="h-3 w-3" />
+                            <HeartIcon className="h-5 w-5" />
                           )}
-                          <span className="text-xs">
+                          <span className="text-sm font-semibold">
                             {index === 0 ? 'Tracking wellness' : 'Monitor health'}
                           </span>
                         </div>
                         
-                        <span className={`text-xs font-medium ${
+                        <span className={`text-sm font-bold ${
                           index === 0 
                             ? 'text-blue-500 dark:text-blue-400' 
-                            : stat.value === 0 
-                              ? 'text-green-500 dark:text-green-400'
-                              : stat.value <= 2 
-                                ? 'text-amber-500 dark:text-amber-400'
-                                : 'text-red-500 dark:text-red-400'
+                            : index === 1
+                            ? 'text-orange-500 dark:text-orange-400'
+                            : index === 2
+                            ? 'text-green-500 dark:text-green-400'
+                            : 'text-purple-500 dark:text-purple-400'
                         }`}>
                           {index === 0 
                             ? 'Active' 
-                            : stat.value === 0 
-                              ? 'Healthy' 
-                              : stat.value <= 2 
-                                ? 'Low Risk' 
-                                : 'Attention'
+                            : index === 2 && stat.value === 0
+                            ? 'Healthy' 
+                            : stat.value <= 2 
+                              ? 'Low Risk' 
+                              : 'Attention'
                           }
                         </span>
                       </div>
@@ -560,7 +511,7 @@ const Dashboard = () => {
               transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
               whileHover={{ y: -4 }}
             >
-              <div className="relative overflow-hidden bg-gradient-to-br from-white/95 to-white/85 dark:from-gray-800/95 dark:to-gray-800/85 backdrop-blur-3xl rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 border border-white/30 dark:border-gray-700/30">
+              <div className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-blue-100/40 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50">
                 {/* Gradient Background Effects */}
                 <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-pink-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500" />
                 <motion.div 
@@ -691,7 +642,7 @@ const Dashboard = () => {
               transition={{ delay: 0.7, type: "spring", stiffness: 100 }}
               whileHover={{ y: -4 }}
             >
-              <div className="relative overflow-hidden bg-gradient-to-br from-white/95 to-white/85 dark:from-gray-800/95 dark:to-gray-800/85 backdrop-blur-3xl rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 border border-white/30 dark:border-gray-700/30">
+              <div className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-blue-100/40 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50">
                 {/* Gradient Background Effects */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500" />
                 <motion.div 
@@ -812,7 +763,7 @@ const Dashboard = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
-            <div className="relative overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50">
+            <div className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-gray-50 to-blue-100/40 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50">
               {/* Header */}
               <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50 bg-gradient-to-r from-gray-50/50 to-gray-100/50 dark:from-gray-700/30 dark:to-gray-600/30">
                 <div className="flex items-center space-x-3">
@@ -893,7 +844,7 @@ const Dashboard = () => {
       </div>
 
       {/* Symptom History Sidebar - Desktop */}
-      <div className="hidden lg:block fixed right-0 top-0 h-full w-96 z-30">
+      <div className="hidden lg:block fixed right-0 top-20 h-[calc(100vh-5rem)] w-96 z-30">
         <SymptomHistorySidebar 
           isOpen={true}
           onClose={() => {}}
