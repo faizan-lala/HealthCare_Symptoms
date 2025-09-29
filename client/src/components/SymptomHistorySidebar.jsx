@@ -113,9 +113,9 @@ const SymptomHistorySidebar = ({ isOpen, onClose }) => {
       />
 
       {/* Sidebar */}
-      <div className={`fixed right-0 top-0 h-full w-96 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl shadow-2xl border-l border-gray-200/50 dark:border-gray-700/50 z-50 transform transition-transform duration-300 ease-in-out ${
+      <div className={`fixed right-0 top-20 h-[calc(100vh-5rem)] w-96 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl shadow-2xl border-l border-gray-200/50 dark:border-gray-700/50 z-30 transform transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
-      } lg:translate-x-0 lg:shadow-none lg:relative lg:z-30 flex flex-col`}>
+      } lg:translate-x-0 lg:shadow-none lg:relative lg:z-30 lg:top-0 lg:h-full flex flex-col`}>
         
         {/* Header */}
         <motion.div 
